@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Tìm bội chung nhỏ nhất</title>
+	<style>
+		input[type="number"] {
+			padding: 10px;
+			margin-bottom: 20px;
+			width: 50px;
+		}
+		button[type="button"] {
+			padding: 12px 20px;
+			background: green;
+			color: white;
+			text-transform: uppercase;
+			border: 0;
+		}
+		div {
+			text-align: center;
+			width: 400px;
+			border: 1px solid red;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding: 20px;
+		}
+
+		.text-res {
+			color: red;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div>
+		<label for="number1">Nhập số thứ 1: </label>
+		<input type="number" id="number1" name="inputnumber" />
+		<br/>
+		<label for="number2">Nhập số thứ 2: </label>
+		<input type="number" id="number2" name="inputnumber"/>
+
+		<p>Tìm bội chung nhỏ nhất trong khoảng [number1, number2]</p>
+		<p>Ví dụ trong khoảng [1, 5] or [5, 1] thì chúng ta sẽ tìm Bội chung nhỏ nhất của các số 1,2,3,4,5 là 60</p>
+		<button type="button" onClick="handleClick()">Tính Toán</button>
+		<p class="text-res">Kết quả: <span id="result">0</span></p>
+	</div>
+	<script>
+		function smallestCommons(arr) {
+			var newArray = arr.sort((a, b) => a - b);
+			var arrMain = [];
+			for (let i = newArray[0]; i <= newArray[1]; i++) {
+				arrMain.push(i);
+			}
+			
+			var arrRes = loopSearch(arrMain);
+
+			while (arrRes.length > 1) {
+				arrRes = loopSearch(arrRes);
+			}
+
+			console.log('arrBCNN', arrRes);
+			return arrRes[0];
+		}
+
+		function loopSearch(arr) {
+			var arrBCNN2Number = [];
+			var i = 0;
+			while (i < arr.length - 1 ) {
+				arrBCNN2Number.push(BCNN(arr[i], arr[i + 1]));
+				i++;
+			};
+			return arrBCNN2Number;
+		}
+
+		function UCLN(a, b) {
+			while (a != b) {
+				if (a > b) a = a - b;
+				else b = b - a;
+			}
+			return a;
+		}
+
+		function BCNN(a, b) {
+			return a*b/UCLN(a,b);
+		}
+
+		function handleClick() {
+			var num1 = document.getElementById('number1').value;
+			var num2 = document.getElementById('number2').value;
+			if (!num1 || !num2) {
+				alert("Vui lòng nhập đầy đủ dữ liệu");
+				document.getElementById('result').innerHTML = 0;
+			} else {
+				document.getElementById('result').innerHTML = smallestCommons([num1, num2]);
+			}
+		}
+	</script>
+</body>
+
+</html>
